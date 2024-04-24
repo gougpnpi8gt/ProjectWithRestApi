@@ -20,7 +20,7 @@ public class MeasurementsDTO {
     Double value;
 
     @NotNull(message = "Значение raining не может быть пустым")
-    Boolean isRaining;
+    Boolean raining;
 
     @NotNull(message = "Сенсор не может быть пустым")
     SensorDTO sensor;

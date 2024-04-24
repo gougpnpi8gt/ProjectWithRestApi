@@ -61,7 +61,7 @@ public class MeasurementsController {
 
     @GetMapping("/rainyDaysCount")
     public Long getRainyDaysCount() {
-        return serviceMeasurements.findAll().stream().filter(Measurements::isRaining).count();
+        return serviceMeasurements.findAll().stream().filter(Measurements::getRaining).count();
     }
     private MeasurementsDTO convertToMeasurementsInMeasurementsDTO(Measurements measurements){
         return modelMapper.map(measurements, MeasurementsDTO.class);

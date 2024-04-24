@@ -47,8 +47,4 @@ public class Measurements {
     @NotNull
     //@Temporal(TemporalType.TIMESTAMP)
     LocalDateTime dateCreatedAt;
-
-    public Boolean isRaining() {
-        return raining;
-    }
 }
