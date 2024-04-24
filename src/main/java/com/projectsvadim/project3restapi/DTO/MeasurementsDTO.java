@@ -27,6 +27,6 @@ public class MeasurementsDTO {
     @Valid
     Sensor sensor;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     LocalDateTime dateCreatedAt;
 }

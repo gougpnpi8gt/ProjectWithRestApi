@@ -3,7 +3,7 @@ package com.projectsvadim.project3restapi.controllers;
 import com.projectsvadim.project3restapi.DTO.SensorDTO;
 import com.projectsvadim.project3restapi.models.Sensor;
 import com.projectsvadim.project3restapi.service.ServiceSensors;
-import com.projectsvadim.project3restapi.util.SensorErrorResponse;
+import com.projectsvadim.project3restapi.util.ErrorResponse;
 import com.projectsvadim.project3restapi.util.SensorNotCreatedException;
 import com.projectsvadim.project3restapi.util.SensorValidator;
 import jakarta.validation.Valid;
@@ -61,8 +61,8 @@ public class SensorController {
 
 
     @ExceptionHandler
-    private ResponseEntity<SensorErrorResponse> handlerException(SensorNotCreatedException e){
-        SensorErrorResponse response = new SensorErrorResponse(
+    private ResponseEntity<ErrorResponse> handlerException(SensorNotCreatedException e){
+        ErrorResponse response = new ErrorResponse(
                 "Sensor with this id wasn't found ", System.currentTimeMillis()
         );
         // в Http ответе тело ответа(response) и статус в заголовке

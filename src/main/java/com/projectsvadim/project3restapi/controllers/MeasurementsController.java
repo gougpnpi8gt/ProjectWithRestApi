@@ -3,8 +3,8 @@ package com.projectsvadim.project3restapi.controllers;
 import com.projectsvadim.project3restapi.DTO.MeasurementsDTO;
 import com.projectsvadim.project3restapi.models.Measurements;
 import com.projectsvadim.project3restapi.service.ServiceMeasurements;
+import com.projectsvadim.project3restapi.util.ErrorResponse;
 import com.projectsvadim.project3restapi.util.MeasurementsError;
-import com.projectsvadim.project3restapi.util.MeasurementsErrorResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -74,8 +74,8 @@ public class MeasurementsController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<MeasurementsErrorResponse> handlerException(MeasurementsError e){
-        MeasurementsErrorResponse response = new MeasurementsErrorResponse(
+    private ResponseEntity<ErrorResponse> handlerException(MeasurementsError e){
+        ErrorResponse response = new ErrorResponse(
                 "Measurements with this id wasn't found ", System.currentTimeMillis()
         );
         // в Http ответе тело ответа(response) и статус в заголовке
