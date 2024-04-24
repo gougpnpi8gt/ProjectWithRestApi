@@ -4,7 +4,7 @@ import com.projectsvadim.project3restapi.DTO.SensorDTO;
 import com.projectsvadim.project3restapi.models.Sensor;
 import com.projectsvadim.project3restapi.service.ServiceSensors;
 import com.projectsvadim.project3restapi.util.ErrorResponse;
-import com.projectsvadim.project3restapi.util.SensorNotCreatedException;
+import com.projectsvadim.project3restapi.util.MeasurementsException;
 import com.projectsvadim.project3restapi.util.SensorValidator;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
+import static com.projectsvadim.project3restapi.util.ErrorsUtil.returnErrorsToClient;
 
 @RestController
 @RequestMapping("/sensors")
@@ -42,16 +42,7 @@ public class SensorController {
         Sensor sensor = convertToSensorDTOInSensor(sensorDTO);
         sensorValidator.validate(sensor, bindingResult);
         if (bindingResult.hasErrors()){
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors){
-                errorMsg
-                        .append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new SensorNotCreatedException(errorMsg.toString());
+            returnErrorsToClient(bindingResult);
         }
         serviceSensors.save(sensor);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -62,7 +53,7 @@ public class SensorController {
 
 
     @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handlerException(SensorNotCreatedException e){
+    private ResponseEntity<ErrorResponse> handlerException(MeasurementsException e){
         ErrorResponse response = new ErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
         );

@@ -26,8 +26,6 @@ public class Sensor implements Serializable { // в случае если мы �
     @Size(min = 2, max = 30, message = "Название должно быть от 2 до 30 символов")
     @Column(name = "name")
     String name;
-
 //    @OneToMany(mappedBy = "sensor")
 //    List<Measurements> measurements;
-
 }

@@ -5,7 +5,7 @@ import com.projectsvadim.project3restapi.DTO.MeasurementsResponse;
 import com.projectsvadim.project3restapi.models.Measurements;
 import com.projectsvadim.project3restapi.service.ServiceMeasurements;
 import com.projectsvadim.project3restapi.util.ErrorResponse;
-import com.projectsvadim.project3restapi.util.MeasurementsError;
+import com.projectsvadim.project3restapi.util.MeasurementsException;
 import com.projectsvadim.project3restapi.util.MeasurementsValidator;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.projectsvadim.project3restapi.util.ErrorsUtil.returnErrorsToClient;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -71,16 +73,7 @@ public class MeasurementsController {
         Measurements measurements = convertToMeasurementsDTOInMeasurements(measurementsDTO);
         measurementsValidator.validate(measurements, bindingResult);
         if (bindingResult.hasErrors()){
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors){
-                errorMsg
-                        .append(error.getField())
-                        .append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new MeasurementsError(errorMsg.toString());
+            returnErrorsToClient(bindingResult);
         }
         // конвертация должна работать только на уровне контроллера!
         serviceMeasurements.add(measurements);
@@ -91,7 +84,7 @@ public class MeasurementsController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handlerException(MeasurementsError e){
+    private ResponseEntity<ErrorResponse> handlerException(MeasurementsException e){
         ErrorResponse response = new ErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
         );

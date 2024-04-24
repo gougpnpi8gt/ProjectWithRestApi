@@ -40,6 +40,7 @@ public class ServiceMeasurements {
         measurementsRepository.save(measurements);
     }
     public void updateMeasurements(Measurements measurements){
+        // для Hibernate persistence context'а
         measurements.setSensor(serviceSensors.findByName(measurements.getSensor().getName()).get());
         measurements.setDateCreatedAt(LocalDateTime.now());
     }
