@@ -6,28 +6,28 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "Table")
+@Table(name = "Sensor")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Sensor {
+public class Sensor implements Serializable { // в случае если мы работаем не числовыми ключами
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @NotEmpty(message = "Название не может быть пустым")
+    @Size(min = 2, max = 30, message = "Название должно быть от 2 до 30 символов")
     @Column(name = "name")
     String name;
 
-    @OneToMany(mappedBy = "sensor")
-    List<Measurements> measurements;
+//    @OneToMany(mappedBy = "sensor")
+//    List<Measurements> measurements;
 
 }

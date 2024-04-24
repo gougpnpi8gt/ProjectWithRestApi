@@ -1,15 +1,11 @@
 package com.projectsvadim.project3restapi.DTO;
 
-import com.projectsvadim.project3restapi.models.Sensor;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,15 +14,15 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MeasurementsDTO {
 
-    @NotEmpty(message = "Значение температуры не может быть пустым")
+    @NotNull(message = "Значение температуры не может быть пустым")
     @Min(value = -100, message = "Значение должно быть больше чем -100")
     @Max(value = 100,  message = "Значение должно быть меньше чем +100")
-    int value;
+    Double value;
 
-    @NotEmpty(message = "Сенсор не может быть пустым")
-    @Valid
-    Sensor sensor;
+    @NotNull(message = "Значение raining не может быть пустым")
+    Boolean isRaining;
 
-    //@Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime dateCreatedAt;
+    @NotNull(message = "Сенсор не может быть пустым")
+    SensorDTO sensor;
+
 }

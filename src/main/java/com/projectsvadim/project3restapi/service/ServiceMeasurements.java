@@ -17,25 +17,30 @@ import java.util.List;
 public class ServiceMeasurements {
 
     final MeasurementsRepository measurementsRepository;
+    final ServiceSensors serviceSensors;
 
     @Autowired
-    public ServiceMeasurements(MeasurementsRepository measurementsRepository) {
+    public ServiceMeasurements(MeasurementsRepository measurementsRepository, ServiceSensors serviceSensors) {
         this.measurementsRepository = measurementsRepository;
+        this.serviceSensors = serviceSensors;
     }
 
     public List<Measurements> findAll(){
         return measurementsRepository.findAll();
     }
 
-    public List<Measurements> findAllByRainingIs(){
-        return measurementsRepository.findAllByRainingIsTrue();
-    }
+//    public List<Measurements> findAllByRainingIs(){
+//        return measurementsRepository.findAllByRainingIsTrue();
+//    }
 
 
     @Transactional
     public void add(Measurements measurements){
-        measurements.setDateCreatedAt(LocalDateTime.now());
+        updateMeasurements(measurements);
         measurementsRepository.save(measurements);
     }
-
+    public void updateMeasurements(Measurements measurements){
+        measurements.setSensor(serviceSensors.findByName(measurements.getSensor().getName()).get());
+        measurements.setDateCreatedAt(LocalDateTime.now());
+    }
 }

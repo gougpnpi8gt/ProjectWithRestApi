@@ -39,7 +39,8 @@ public class SensorController {
     @PostMapping("/registration")
     public ResponseEntity<HttpStatus> registrationSensor(@RequestBody @Valid SensorDTO sensorDTO, // регистрация нового сенсора
                                                     BindingResult bindingResult){
-        sensorValidator.validate(sensorDTO, bindingResult);
+        Sensor sensor = convertToSensorDTOInSensor(sensorDTO);
+        sensorValidator.validate(sensor, bindingResult);
         if (bindingResult.hasErrors()){
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -52,7 +53,7 @@ public class SensorController {
             }
             throw new SensorNotCreatedException(errorMsg.toString());
         }
-        serviceSensors.save(convertToSensorDTOInSensor(sensorDTO));
+        serviceSensors.save(sensor);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     private Sensor convertToSensorDTOInSensor(SensorDTO sensorDTO){
@@ -63,10 +64,10 @@ public class SensorController {
     @ExceptionHandler
     private ResponseEntity<ErrorResponse> handlerException(SensorNotCreatedException e){
         ErrorResponse response = new ErrorResponse(
-                "Sensor with this id wasn't found ", System.currentTimeMillis()
+                e.getMessage(), System.currentTimeMillis()
         );
         // в Http ответе тело ответа(response) и статус в заголовке
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // NOT_FOUND - 404 статус
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // NOT_FOUND - 404 статус
     }
 
 }

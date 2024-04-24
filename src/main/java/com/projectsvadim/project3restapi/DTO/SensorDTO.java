@@ -7,13 +7,11 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SensorDTO {
 
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @NotEmpty(message = "Название не может быть пустым")
+    @Size(min = 2, max = 30, message = "Название должно быть от 2 до 30 символов")
     String name;
 
 }
