@@ -22,9 +22,9 @@ public class ServiceSensors {
         this.sensorsRepository = sensorsRepository;
     }
 
-    public Sensor findByName(String name){
+    public Optional<Sensor> findByName(String name){
         Optional<Sensor> sensor = sensorsRepository.findByName(name);
-        return sensor.orElse(null);
+        return sensor;
     }
 
     @Transactional

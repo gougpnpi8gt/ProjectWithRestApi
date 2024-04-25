@@ -1,15 +1,13 @@
 package com.projectsvadim.project3restapi.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -23,26 +21,30 @@ public class Measurements {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Integer id;
 
-    @NotEmpty(message = "Значение температуры не может быть пустым")
+    @NotNull(message = "Значение температуры не может быть пустым")
     @Min(value = -100, message = "Значение должно быть больше чем -100")
     @Max(value = 100,  message = "Значение должно быть меньше чем +100")
     @Column(name = "value")
-    int value;
+    Double value;
+    /*
+    Double - если не перадем температуру, будет null
+    double - если не передаем температуру, будет 0.0, так как примитивные типы не могут хранить null;
+     */
 
-    @NotEmpty(message = "Значение raining не может быть пустым")
+    @NotNull(message = "Значение raining не может быть пустым")
     @Column(name = "raining")
-    boolean raining;
+    Boolean raining;
 
-    @NotEmpty(message = "Сенсор не может быть пустым")
-    @Valid
+    @NotNull(message = "Сенсор не может быть пустым")
     @ManyToOne
-    @JoinColumn(name = "sensor_id",
-            referencedColumnName = "id")
+    @JoinColumn(name = "sensor",
+            referencedColumnName = "name")
     Sensor sensor;
 
     @Column(name = "date_created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    //@Temporal(TemporalType.TIMESTAMP)
     LocalDateTime dateCreatedAt;
 }
